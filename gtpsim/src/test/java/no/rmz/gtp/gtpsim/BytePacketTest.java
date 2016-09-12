@@ -16,13 +16,13 @@ public class BytePacketTest {
     public void getRightmostBit() {
         final OctetPacket bp
                 = new OctetPacket(new byte[]{RIGHTMOST_SET});
-        assertEquals(1, bp.getBits(0, RIGHTMOST_SET));
+        assertEquals(1, bp.getUnsignedInt(0, RIGHTMOST_SET));
     }
 
     @Test
     public void getLeftmostBit() {
         final OctetPacket bp = new OctetPacket(new byte[]{LEFTMOST_SET});
-        assertEquals(1, bp.getBits(6, 1));
+        assertEquals(1, bp.getUnsignedInt(6, 1));
     }
 
     @Test
@@ -30,7 +30,7 @@ public class BytePacketTest {
         final OctetPacket bp
                 = new OctetPacket(new byte[]{THREE_SET_SHIFT_2});
         // XXX So this is screwed up.
-        assertEquals(0b111, bp.getBits(2, 3));
+        assertEquals(0b111, bp.getUnsignedInt(2, 3));
     }
 
     @Test
@@ -48,7 +48,7 @@ public class BytePacketTest {
         for (int i = 0; i < MAX_SHIFT; i++) {
             final OctetPacket bp
                     = new OctetPacket(new byte[]{0});
-            bp.setBits(i, 1, 1);
+            bp.setUnsignedInt(i, 1, 1);
             assertOnlyBitISet(i, bp);
         }
     }
@@ -57,7 +57,7 @@ public class BytePacketTest {
         for (int j = 0; j < MAX_SHIFT; j++) {
             final String msg
                     = String.format("j = %d, i = %d, p = %s", j, i, bp);
-            final int bitj = bp.getBits(j, 1);
+            final int bitj = bp.getUnsignedInt(j, 1);
             if (i == j) {
                 assertEquals("expect 1: " + msg, 0b1, bitj);
             } else {

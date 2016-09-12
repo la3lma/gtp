@@ -28,11 +28,11 @@ public final class GtpPacket {
      * @return a nonegative integer.
      */
     public int getVersion() {
-        return pkt.getBits(5, 3);
+        return pkt.getUnsignedInt(5, 3);
     }
 
     public void setVersion(final int version) {
-        pkt.setBits(5, 3, version);
+        pkt.setUnsignedInt(5, 3, version);
     }
 
     /**
@@ -41,11 +41,11 @@ public final class GtpPacket {
      * @return a nonegative integer.
      */
     public int getProtocolType() {
-        return pkt.getBits(4, 1);
+        return pkt.getUnsignedInt(4, 1);
     }
 
     public void setProtocolType(int value) {
-        pkt.setBits(4, 1, value);
+        pkt.setUnsignedInt(4, 1, value);
     }
 
     /**
@@ -54,11 +54,11 @@ public final class GtpPacket {
      * @return a nonegative integer.
      */
     public int getReserved() {
-        return pkt.getBits(1, 3);
+        return pkt.getUnsignedInt(1, 3);
     }
 
     public void setReserved() {
-        pkt.setBits(4, 3, 0b111);
+        pkt.setUnsignedInt(4, 3, 0b111);
     }
 
     /**
@@ -70,10 +70,10 @@ public final class GtpPacket {
      * @return a nonegative integer.
      */
     public int getHdrLen() {
-        return pkt.getBits(0, 1);
+        return pkt.getUnsignedInt(0, 1);
     }
 
     public void setHdrLen(int value) {
-        pkt.setBits(0, 1, value);
+        pkt.setUnsignedInt(0, 1, value);
     }
 }

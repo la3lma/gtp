@@ -15,7 +15,7 @@ public class GtpPacketTest {
 
     @Test
     public void testGetVersion() {
-        final GtpPacket bp = newBytePacket(0b010000000);
+        final GtpPacket bp = newBytePacket(0b01000000);
         assertEquals(0b010, bp.getVersion());
     }
 

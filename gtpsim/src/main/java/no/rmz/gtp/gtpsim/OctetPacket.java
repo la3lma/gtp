@@ -22,6 +22,10 @@ import static com.google.common.base.Preconditions.checkArgument;
  * XXX NOTE: I am pretty confident this thing screws up whenever the eighth bit
  * of the first octet is set (sign). I'd really like to know how to get around
  * that issue.
+ *
+ * Take a peek at this one, just to see how it can be done:
+ *
+ * https://github.com/biasedbit/efflux/blob/master/src/main/java/com/biasedbit/efflux/packet/DataPacket.java
  */
 public final class OctetPacket {
 
@@ -58,7 +62,7 @@ public final class OctetPacket {
      * @param length
      * @return
      */
-    public int getBits(
+    public int getUnsignedInt(
             final int offset,
             final int length) {
         checkLengthAndOffset(length, offset);
@@ -67,8 +71,13 @@ public final class OctetPacket {
         final byte unmasked = packet[0];
         final byte masked = (byte) (unmasked & mask);
         final byte rawShifted = (byte) (masked >> offset);
-        final byte shifted = (byte) ((byte) 0xff & rawShifted);
-        return shifted;
+        final byte result = (byte) ((byte) 0xff & rawShifted);
+
+        if (result < 0) {
+            throw new RuntimeException("Detected negative number where unsigned is required: " + result);
+        } else {
+            return result;
+        }
     }
 
     /**
@@ -78,11 +87,12 @@ public final class OctetPacket {
      * @param length
      * @param value
      */
-    public void setBits(
+    public void setUnsignedInt(
             final int offset,
             final int length,
             final int value) {
         checkLengthAndOffset(length, offset);
+        checkArgument(value >= 0);
 
         final byte mask = getMask(offset, length);
         final byte bv = packet[0];
