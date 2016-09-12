@@ -3,11 +3,9 @@ package no.rmz.gtp.gtpsim;
 import com.google.common.base.Preconditions;
 
 /**
+ * https://en.wikipedia.org/wiki/GPRS_Tunnelling_Protocol
  *
- * Bit position in packet: 0-2 Version 3 Protocol Type 4 Reserved 5 Extension
- * header flag 6 Sequence number flag 7 N-PDU number flag 8-15 Message type
- * 16-31 Message length 32-63 TEID 16 bit optional sequence number 8 bit
- * Optional N-PDU field 8 bit Optional next extension header type
+ * // XXX At present this is GTPv1
  */
 public final class GtpPacket {
 
@@ -98,4 +96,72 @@ public final class GtpPacket {
     public void setNpduFlag(int value) {
         pkt.setUnsignedInt(7, 1, value);
     }
+
+    /**
+     * Message type
+     *
+     * @return
+     */
+    public int getMessageType() {
+        return pkt.getUnsignedInt(8, 8);
+    }
+
+    public void setMessageType(int value) {
+        pkt.setUnsignedInt(8, 8, value);
+    }
+
+    /**
+     * Message length
+     *
+     * @return
+     */
+    public int getMessageLength() {
+        return pkt.getUnsignedInt(16, 16);
+    }
+
+    public void setMessageLength(int value) {
+        pkt.setUnsignedInt(16, 16, value);
+    }
+
+    /**
+     * Tunnel Endpoint Identifier
+     *
+     * @return
+     */
+    public int getTunnelEndpointIdentifier() {
+        return pkt.getUnsignedInt(32, 32);
+    }
+
+    public void setTunnelEndpointIdentifier(int value) {
+        pkt.setUnsignedInt(32, 32, value);
+    }
+
+    /**
+     * Tunnel Endpoint Identifier
+     *
+     * @return
+     */
+    public int getNPDUNumber() {
+        return pkt.getUnsignedInt(80, 8);
+    }
+
+    public void setNPDUNumber(int value) {
+        pkt.setUnsignedInt(80, 8, value);
+    }
+
+    /**
+     * Tunnel Endpoint Identifier
+     *
+     * @return
+     */
+    public int getSequenceNumber() {
+        return pkt.getUnsignedInt(64, 16);
+    }
+
+    public void setSequenceNumber(int value) {
+        pkt.setUnsignedInt(64, 16, value);
+    }
+
+    // XXX Extension headers missing
+
 }

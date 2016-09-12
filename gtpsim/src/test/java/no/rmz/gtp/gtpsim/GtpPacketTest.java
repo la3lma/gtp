@@ -9,9 +9,14 @@ public class GtpPacketTest {
         return new GtpPacket(new byte[]{b});
     }
 
-    private GtpPacket newBytePacket(final int b) {
-        return newBytePacket((byte) b);
+    private GtpPacket newBytePacket(final int... bytes) {
+        final byte[] byteArray = new byte[bytes.length];
+        for (int i = 0; i < bytes.length; i++) {
+            byteArray[i] = (byte) bytes[i];
+        }
+        return new GtpPacket(byteArray);
     }
+
 
     @Test
     public void testGetVersion() {
@@ -79,4 +84,18 @@ public class GtpPacketTest {
         bp.setSeqNoFlag(1);
         assertEquals(0b1, bp.getSeqNoFlag());
     }
+
+    @Test
+    public void testGetGtpMessageType() {
+        final GtpPacket bp = newBytePacket(0b01000000, 152);
+        assertEquals(0b1, bp.getSeqNoFlag());
+    }
+
+    @Test
+    public void testSetGtpMessageType() {
+        final GtpPacket bp = newBytePacket(0, 0);
+        bp.setMessageType(152);
+        assertEquals(152, bp.getSeqNoFlag());
+    }
+
 }

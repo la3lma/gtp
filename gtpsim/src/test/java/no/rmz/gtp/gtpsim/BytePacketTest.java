@@ -5,23 +5,21 @@ import org.junit.Test;
 
 public class BytePacketTest {
 
-    // XXX Are we getting to the eight bit?
-
     private final static int MAX_SHIFT = 7;
     private final static byte THREE_SET_SHIFT_2 = 0b00011100;
-    private final static byte RIGHTMOST_SET = 0b1;
-    private final static byte LEFTMOST_SET = (byte) (0b1 << (MAX_SHIFT - 1));
+    private final static byte LEAST_SIGNIFICANT_BIT_SET = 0b1;
+    private final static byte MOST_SIGNIFICANT_BIT_SET = (byte) (0b1 << (MAX_SHIFT - 1));
 
     @Test
     public void getRightmostBit() {
         final OctetPacket bp
-                = new OctetPacket(new byte[]{RIGHTMOST_SET});
-        assertEquals(1, bp.getUnsignedInt(0, RIGHTMOST_SET));
+                = new OctetPacket(new byte[]{LEAST_SIGNIFICANT_BIT_SET});
+        assertEquals(1, bp.getUnsignedInt(0, LEAST_SIGNIFICANT_BIT_SET));
     }
 
     @Test
     public void getLeftmostBit() {
-        final OctetPacket bp = new OctetPacket(new byte[]{LEFTMOST_SET});
+        final OctetPacket bp = new OctetPacket(new byte[]{MOST_SIGNIFICANT_BIT_SET});
         assertEquals(1, bp.getUnsignedInt(6, 1));
     }
 
@@ -29,7 +27,6 @@ public class BytePacketTest {
     public void getThreeBitsShiftedtwoLeft() {
         final OctetPacket bp
                 = new OctetPacket(new byte[]{THREE_SET_SHIFT_2});
-        // XXX So this is screwed up.
         assertEquals(0b111, bp.getUnsignedInt(2, 3));
     }
 
