@@ -36,10 +36,13 @@ public final class OctetPacket {
     }
 
     private void checkLengthAndOffset(final int length, final int offset) {
+
         checkArgument(length > 0);
-        checkArgument(length <= 7);
+        final int noOfBitsInPacket = packet.length * 8;
+        checkArgument(length <= noOfBitsInPacket);
         checkArgument(offset >= 0);
-        checkArgument(offset <= 7);
+        checkArgument(offset <= noOfBitsInPacket);
+        checkArgument(offset + length <= noOfBitsInPacket);
     }
 
     private byte getMask(final int offset, final int length) {
