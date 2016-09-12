@@ -13,9 +13,12 @@ public class GtpPacketTest {
         final byte[] packet = new byte[]{0};
         final GtpPacket gtpPacket = new GtpPacket(packet);
         gtpPacket.setVersion(expectedVersion);
+        gtpPacket.setReserved();
 
 
         final int version = gtpPacket.getVersion();
         assertEquals(expectedVersion, version);
+        final int reserved = gtpPacket.getReserved();
+        assertEquals(0b111, reserved);
     }
 }

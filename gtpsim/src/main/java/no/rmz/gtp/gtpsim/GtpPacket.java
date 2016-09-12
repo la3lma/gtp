@@ -11,6 +11,7 @@ import com.google.common.base.Preconditions;
  * type
  */
 public final class GtpPacket {
+
     final byte[] packet;
 
     public GtpPacket(final byte[] packet) {
@@ -23,9 +24,11 @@ public final class GtpPacket {
     //             then get a real world captured packet, read it, and
     //             how it goes, then move on to greater things.
     private int getBits(final int offset, final byte mask) {
-        byte b;
-        b = (byte) (((byte) (packet[0] & (byte) mask)) >> offset);
-        return (int) b;
+
+        final byte unmasked = packet[0];
+        final byte masked = (byte) (unmasked & mask);
+        final byte shifted = (byte) (masked >> offset);
+        return shifted;
     }
 
     private void setBits(final int value, final int offset, final byte mask) {
@@ -74,6 +77,11 @@ public final class GtpPacket {
         return getBits(1, (byte) 0b00001110);
     }
 
+    public void setReserved() {
+        int value = 0b111;
+        setBits(value, 4, (byte) 0b00001110);
+    }
+
     /**
      * A 1-bit value that for GTP' version 0 indicates if using a 20 byte header
      * (value 0) (as per GTP) or this 6 byte header. This bit must be unset
@@ -84,5 +92,9 @@ public final class GtpPacket {
      */
     public int getHdrLen() {
         return getBits(0, (byte) 0b00000001);
+    }
+
+    public void setHdrLen(int value) {
+        setBits(value, 1, (byte) 0b00000001);
     }
 }
