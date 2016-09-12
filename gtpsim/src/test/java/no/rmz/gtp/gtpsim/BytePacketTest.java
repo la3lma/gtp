@@ -53,11 +53,11 @@ public class BytePacketTest {
     private void assertOnlyBitISet(int i, final BytePacket bp) {
         for (int j = 0; j < 7; j++) {
             final String msg
-                    = String.format("j = %d, i = %d", j, i);
+                    = String.format("j = %d, i = %d, p = %s", j, i, bp);
             if (i == j) {
-                assertEquals("expect 1: " + msg, 0b1, bp.getBits(i, 1));
+                assertEquals("expect 1: " + msg, 0b1, bp.getBits(j, 1));
             } else {
-                assertEquals("expect 0: " + msg, 0, bp.getBits(i, 1));
+                assertEquals("expect 0: " + msg, 0, bp.getBits(j, 1));
             }
         }
     }

@@ -68,4 +68,9 @@ public final class BytePacket {
 
         packet[0] = storedBits;
     }
+
+    @Override
+    public String toString() {
+        return "BytePacket{" + "packet=" + packet[0] + '}';
+    }
 }
