@@ -5,9 +5,10 @@ import org.junit.Test;
 
 public class BytePacketTest {
 
+    private final static int MAX_SHIFT = 7;
     private final static byte THREE_SET_SHIFT_2 = 0b00011100;
     private final static byte RIGHTMOST_SET = 0b1;
-    private final static byte LEFTMOST_SET = (byte)  (0b1 << 6);
+    private final static byte LEFTMOST_SET = (byte) (0b1 << (MAX_SHIFT - 1));
 
     @Test
     public void getRightmostBit() {
@@ -32,7 +33,7 @@ public class BytePacketTest {
 
     @Test
     public void getSingleBitShiftedRound() {
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < MAX_SHIFT; i++) {
             final byte b = (byte) (0b1 << i);
             final BytePacket bp
                     = new BytePacket(new byte[]{b});
@@ -42,7 +43,7 @@ public class BytePacketTest {
 
     @Test
     public void setSingleBitShiftedRound() {
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < MAX_SHIFT; i++) {
             final BytePacket bp
                     = new BytePacket(new byte[]{0});
             bp.setBits(i, 1, 1);
@@ -50,8 +51,8 @@ public class BytePacketTest {
         }
     }
 
-    private void assertOnlyBitISet(int i, final BytePacket bp) {
-        for (int j = 0; j < 7; j++) {
+    private void assertOnlyBitISet(final int i, final BytePacket bp) {
+        for (int j = 0; j < MAX_SHIFT; j++) {
             final String msg
                     = String.format("j = %d, i = %d, p = %s", j, i, bp);
             if (i == j) {
