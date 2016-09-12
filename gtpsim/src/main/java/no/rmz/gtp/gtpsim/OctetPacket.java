@@ -68,14 +68,20 @@ public final class OctetPacket {
     public int getUnsignedInt(
             final int offset,
             final int length) {
+        final int currentByte = 0;
+
         checkLengthAndOffset(length, offset);
 
         final byte mask = getMask(offset, length);
-        final byte unmasked = packet[0];
+        final byte unmasked = packet[currentByte];
         final byte masked = (byte) (unmasked & mask);
         final byte rawShifted = (byte) (masked >> offset);
         final byte result = (byte) ((byte) 0xff & rawShifted);
 
+        return assertNoNegative(result);
+    }
+
+    private int assertNoNegative(final byte result) throws RuntimeException {
         if (result < 0) {
             throw new RuntimeException("Detected negative number where unsigned is required: " + result);
         } else {
