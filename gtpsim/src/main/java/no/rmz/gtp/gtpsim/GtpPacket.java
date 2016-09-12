@@ -17,10 +17,72 @@ public final class GtpPacket {
         this.packet = Preconditions.checkNotNull(packet);
         // XXX Sanity checks missing
     }
-
-    public int getVersion() {
+    // XXX Todo:   Make getbits/setbits work on the actual byte array
+    //             directly (address bytes directly in the packet by their
+    //             bitwise index).  Set up roundtrip read/write unit tests,
+    //             then get a real world captured packet, read it, and
+    //             how it goes, then move on to greater things.
+    private int getBits(final int offset, final byte mask) {
         byte b;
-        b = (byte) (((byte) (packet[0] & (byte) 0b11100000)) >> 5);
+        b = (byte) (((byte) (packet[0] & (byte) mask)) >> offset);
         return (int) b;
+    }
+
+    private void setBits(final int value, final int offset, final byte mask) {
+        final byte bv = (byte) value;
+        final byte storedBits = (byte) (bv << offset);
+        packet[0] = (byte) (storedBits | (byte) (packet[0] & mask));
+    }
+
+    /**
+     * The first header field in a GTP' packet is the 3-bit version field. For
+     * GTP' v2, this has a value of 2 (hence the name GTP' v2).
+     *
+     * @return
+     */
+    public int getVersion() {
+        return getBits(5, (byte) 0b11100000);
+    }
+
+    
+
+    // XXX Calculate the bit patttern based on the length of the field
+    //     in bits.
+    public void setVersion(final int version) {
+        setBits(version, 5, (byte) 0b11100000);
+    }
+
+    /**
+     * a 1-bit value that differentiates GTP' (value 0) from GTP (value 1).
+     *
+     * @return
+     */
+    public int getProtocolType() {
+        return getBits(4, (byte) 0b00010000);
+    }
+
+    public void setProtocolType(int value) {
+        setBits(value,  4, (byte) 0b00010000);
+    }
+
+    /**
+     * A 3-bit reserved field (must be 1's).
+     *
+     * @return
+     */
+    public int getReserved() {
+        return getBits(1, (byte) 0b00001110);
+    }
+
+    /**
+     * A 1-bit value that for GTP' version 0 indicates if using a 20 byte header
+     * (value 0) (as per GTP) or this 6 byte header. This bit must be unset
+     * (value 0) for subsequent GTP' versions and in these does not indicate the
+     * header length as this must always be 6 bytes.
+     *
+     * @return
+     */
+    public int getHdrLen() {
+        return getBits(0, (byte) 0b00000001);
     }
 }
