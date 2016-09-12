@@ -18,6 +18,10 @@ import static com.google.common.base.Preconditions.checkArgument;
  * XXX NOTE: The set/get methods will eventually be able to set/get bit fields
  * anywhere in the packet, but for now, and until proven able to do so
  * correctly, we will only look at bit-fields within the first octet.
+ *
+ * XXX NOTE: I am pretty confident this thing screws up whenever the eighth bit
+ * of the first octet is set (sign). I'd really like to know how to get around
+ * that issue.
  */
 public final class OctetPacket {
 
