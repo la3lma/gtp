@@ -88,14 +88,14 @@ public class GtpPacketTest {
     @Test
     public void testGetGtpMessageType() {
         final GtpPacket bp = newBytePacket(0b01000000, 152);
-        assertEquals(0b1, bp.getSeqNoFlag());
+        assertEquals(152, bp.getMessageType());
     }
 
     @Test
     public void testSetGtpMessageType() {
         final GtpPacket bp = newBytePacket(0, 0);
         bp.setMessageType(152);
-        assertEquals(152, bp.getSeqNoFlag());
+        assertEquals(152, bp.getMessageType());
     }
 
 }
