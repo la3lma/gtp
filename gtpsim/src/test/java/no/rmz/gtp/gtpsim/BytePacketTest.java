@@ -55,10 +55,11 @@ public class BytePacketTest {
         for (int j = 0; j < MAX_SHIFT; j++) {
             final String msg
                     = String.format("j = %d, i = %d, p = %s", j, i, bp);
+            final int bitj = bp.getBits(j, 1);
             if (i == j) {
-                assertEquals("expect 1: " + msg, 0b1, bp.getBits(j, 1));
+                assertEquals("expect 1: " + msg, 0b1, bitj);
             } else {
-                assertEquals("expect 0: " + msg, 0, bp.getBits(j, 1));
+                assertEquals("expect 0: " + msg, 0b0, bitj);
             }
         }
     }
