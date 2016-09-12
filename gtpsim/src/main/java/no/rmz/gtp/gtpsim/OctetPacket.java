@@ -14,6 +14,10 @@ import static com.google.common.base.Preconditions.checkArgument;
  *
  * Efficiency is not a primary concern for this implementation, but clarity and
  * correctness is.
+ *
+ * XXX NOTE: The set/get methods will eventually be able to set/get bit fields
+ * anywhere in the packet, but for now, and until proven able to do so
+ * correctly, we will only look at bit-fields within the first octet.
  */
 public final class OctetPacket {
 
