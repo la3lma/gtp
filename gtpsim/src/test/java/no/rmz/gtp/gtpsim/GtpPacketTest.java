@@ -3,22 +3,49 @@ package no.rmz.gtp.gtpsim;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
-
 public class GtpPacketTest {
 
-    @Test
-    public void testFirstOctetRoundtrip() {
-        final int expectedVersion = 3;
-        
-        final byte[] packet = new byte[]{0};
-        final GtpPacket gtpPacket = new GtpPacket(packet);
-        gtpPacket.setVersion(expectedVersion);
-        gtpPacket.setReserved();
-
-
-        final int version = gtpPacket.getVersion();
-        assertEquals(expectedVersion, version);
-        final int reserved = gtpPacket.getReserved();
-        assertEquals(0b111, reserved);
+    private GtpPacket newBytePacket(final byte b) {
+        return new GtpPacket(new byte[]{b});
     }
+
+    private GtpPacket newBytePacket(final int b) {
+        return newBytePacket((byte) b);
+    }
+
+    @Test
+    public void testGetVersion() {
+        final GtpPacket bp = newBytePacket(0b010000000);
+        assertEquals(0b010, bp.getVersion());
+    }
+
+    @Test
+    public void testSetVersion() {
+    }
+
+    @Test
+    public void testGetProtocolType() {
+    }
+
+    @Test
+    public void testSetProtocolType() {
+    }
+
+    @Test
+    public void testGetReserved() {
+    }
+
+    @Test
+    public void testSetReserved() {
+    }
+
+    @Test
+    public void testGetHdrLen() {
+    }
+
+    @Test
+    public void testSetHdrLen() {
+    }
+
+ 
 }

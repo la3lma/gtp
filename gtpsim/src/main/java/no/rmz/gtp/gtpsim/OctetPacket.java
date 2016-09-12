@@ -3,12 +3,31 @@ package no.rmz.gtp.gtpsim;
 import com.google.common.base.Preconditions;
 import static com.google.common.base.Preconditions.checkArgument;
 
-public final class BytePacket {
+/**
+ * Implement a packet, consisting of a sequence of octets, that can be
+ * interpreted as a sequence of nonnegative binary encoded integers of varying
+ * positive bit-lengths.
+ *
+ * The intent of the class is to facilitate experimentation with network
+ * protocol packets, where it is necessary to both parse and construct such
+ * packets on a per-field level.
+ *
+ * Efficiency is not a primary concern for this implementation, but clarity and
+ * correctness is.
+ */
+public final class OctetPacket {
 
     final byte[] packet;
 
-    public BytePacket(final byte[] packet) {
+    public OctetPacket(final byte[] packet) {
         this.packet = Preconditions.checkNotNull(packet);
+    }
+
+    private void checkLengthAndOffset(final int length, final int offset) {
+        checkArgument(length > 0);
+        checkArgument(length <= 7);
+        checkArgument(offset >= 0);
+        checkArgument(offset <= 7);
     }
 
     private byte getMask(final int offset, final int length) {
@@ -23,13 +42,6 @@ public final class BytePacket {
         return result;
     }
 
-    private void checkLengthAndOffset(final int length, final int offset) {
-        checkArgument(length > 0);
-        checkArgument(length <= 7);
-        checkArgument(offset >= 0);
-        checkArgument(offset <= 7);
-    }
-
     /**
      * Getting bits off the first byte of the array, interpreting them as an
      * unsigned binary number.
@@ -41,9 +53,11 @@ public final class BytePacket {
     public int getBits(
             final int offset,
             final int length) {
+        checkLengthAndOffset(length, offset);
+
         final byte mask = getMask(offset, length);
         final byte unmasked = packet[0];
-        byte masked = (byte) (unmasked & mask);
+        final byte masked = (byte) (unmasked & mask);
         final byte rawShifted = (byte) (masked >> offset);
         final byte shifted = (byte) ((byte) 0xff & rawShifted);
         return shifted;
