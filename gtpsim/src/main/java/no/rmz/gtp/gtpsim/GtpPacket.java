@@ -28,11 +28,11 @@ public final class GtpPacket {
      * @return a nonegative integer.
      */
     public int getVersion() {
-        return pkt.getUnsignedInt(5, 3);
+        return pkt.getUnsignedInt(0, 2);
     }
 
     public void setVersion(final int version) {
-        pkt.setUnsignedInt(5, 3, version);
+        pkt.setUnsignedInt(0, 2, version);
     }
 
     /**
@@ -41,11 +41,11 @@ public final class GtpPacket {
      * @return a nonegative integer.
      */
     public int getProtocolType() {
-        return pkt.getUnsignedInt(4, 1);
+        return pkt.getUnsignedInt(3, 1);
     }
 
     public void setProtocolType(int value) {
-        pkt.setUnsignedInt(4, 1, value);
+        pkt.setUnsignedInt(3, 1, value);
     }
 
     /**
@@ -54,26 +54,48 @@ public final class GtpPacket {
      * @return a nonegative integer.
      */
     public int getReserved() {
-        return pkt.getUnsignedInt(1, 3);
+        return pkt.getUnsignedInt(4, 1);
     }
 
     public void setReserved() {
-        pkt.setUnsignedInt(4, 3, 0b111);
+        pkt.setUnsignedInt(4, 1, 0b1);
     }
 
     /**
-     * A 1-bit value that for GTP' version 0 indicates if using a 20 byte header
-     * (value 0) (as per GTP) or this 6 byte header. This bit must be unset
-     * (value 0) for subsequent GTP' versions and in these does not indicate the
-     * header length as this must always be 6 bytes.
-     *
-     * @return a nonegative integer.
+     * Extension header flag.
+     * @return
      */
-    public int getHdrLen() {
-        return pkt.getUnsignedInt(0, 1);
+    public int getExtensionHeaderFlag() {
+        return pkt.getUnsignedInt(5, 1);
     }
 
-    public void setHdrLen(int value) {
-        pkt.setUnsignedInt(0, 1, value);
+    public void setExtensionHeaderFlag(int value) {
+        pkt.setUnsignedInt(5, 1, value);
+    }
+
+    /**
+     * N-PDU flag number
+     *
+     * @return
+     */
+    public int getSeqNoFlag() {
+        return pkt.getUnsignedInt(6, 1);
+    }
+
+    public void setSeqNoFlag(int value) {
+        pkt.setUnsignedInt(6, 1, value);
+    }
+
+    /**
+     * N-PDU flag number
+     *
+     * @return
+     */
+    public int getNpduFlag() {
+        return pkt.getUnsignedInt(7, 1);
+    }
+
+    public void setNpduFlag(int value) {
+        pkt.setUnsignedInt(7, 1, value);
     }
 }
